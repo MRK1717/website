@@ -13,32 +13,41 @@ Remote controlled car using wireless serial communication.
 
 This project implements a wireless remote-controlled car using STM32 microcontrollers and HC-12 wireless communication modules.
 
-The controller side is built on a breadboard and contains a push button used for forward movement, a reverse switch for changing the driving direction, and a potentiometer used for left/right steering control. These inputs are processed by the STM32 NUCLEO board and transmitted wirelessly through the HC-12 transmitter module using UART communication.
+The controller side is built on a breadboard and contains a push button used for forward movement, 
+a reverse switch for changing the driving direction, 
+and a potentiometer used for left/right steering control. These inputs are processed by the STM32 NUCLEO board and transmitted wirelessly through the HC-12 transmitter module using UART communication.
 
 On the vehicle side, another HC-12 module receives the commands and forwards them to the motor control system. The motors are controlled through a motor driver connected to the 4-wheel chassis platform.
 
 The system supports:
-- forward movement;
-- reverse movement;
-- left/right steering;
-- wireless real-time control.
+forward movement;
+reverse movement;
+left/right steering;
+wireless real-time control.
+ 
 ## Motivation
 
-I chose this project because it combines both hardware and software concepts, allowing me to learn about wireless communication, motor control, and processing analog inputs.
+I chose this project because it combines both hardware and software concepts, 
+allowing me to learn about wireless communication, motor control, and processing analog inputs.
 
-It is also a practical project that can be extended later with additional sensors or control features.
+I also wanted to better understand how embedded systems communicate in real time 
+and how different hardware modules interact together inside a complete system.
+
+Another reason for choosing this project was the practical side of building 
+and testing a physical prototype instead of only simulating components individually.
+
+It is also a project that can later be improved with additional sensors, speed control, or autonomous driving features.
 
 ## Architecture 
 
 ![Block Diagram](./block_diagram.svg)
 
 The system is composed of two main subsystems:
-- Controller side: breadboard inputs, STM32 NUCLEO board, and HC-12 transmitter module
-- Car side: HC-12 receiver module, control board, motor driver, DC motors, and battery-powered chassis
-
+Controller side: breadboard inputs, STM32 NUCLEO board, and HC-12 transmitter module
+Car side: HC-12 receiver module, control board, motor driver, DC motors, and battery-powered chassis
 The controller subsystem uses a push button for forward movement, a reverse switch for changing direction, and a potentiometer for steering control. These inputs are processed by the STM32 microcontroller and transmitted wirelessly through the HC-12 module using UART communication.
-
-On the vehicle side, the received commands are processed by the control board, which drives the motor driver and controls the left and right motor channels accordingly.
+On the vehicle side, the received commands are processed by the control board, 
+which drives the motor driver and controls the left and right motor channels accordingly.
 
 ## Log
 
@@ -46,7 +55,8 @@ On the vehicle side, the received commands are processed by the control board, w
 Chose the project idea and analyzed the system architecture. Studied the components required for building the RC car, including the STM32 NUCLEO board, HC-12 module, and motor driver.
 
 ### Week 25 - 28 April
-Researched communication between controller and car using the HC-12 module. Planned the hardware setup and started preparing the initial documentation.
+Researched communication between controller and car using the HC-12 module. 
+Planned the hardware setup and started preparing the initial documentation.
 
 ## Hardware
 
@@ -69,15 +79,14 @@ The STM32 reads these inputs using GPIO and ADC peripherals and transmits moveme
 Vehicle Subsystem:
 
 The vehicle subsystem contains:
-- 4-wheel chassis platform;
-- four DC motors;
-- motor driver shield;
-- HC-12 wireless receiver module;
-- battery-powered motor control system.
+4 wheel chassis platform;
+four DC motors;
+motor driver shield;
+HC-12 wireless receiver module;
+battery-powered motor control system.
 
 The wireless commands received through the HC-12 module are processed by the control board, 
 which drives the motors through the motor driver.
-
 The motors are grouped into left and right channels in order to implement differential steering for turning movements.
 
 The prototype is assembled using modular components, jumper wires, breadboard connections, 
