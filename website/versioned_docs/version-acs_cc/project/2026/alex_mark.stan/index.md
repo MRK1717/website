@@ -11,12 +11,17 @@ Remote controlled car using wireless serial communication.
 
 ## Description
 
-This project consists of building a remote-controlled car using wireless serial communication through the HC-12 module.
+This project implements a wireless remote-controlled car using STM32 microcontrollers and HC-12 wireless communication modules.
 
-A joystick is used as input on the controller side, sending commands wirelessly to the car. The STM32 NUCLEO board receives these commands and controls the motors accordingly.
+The controller side is built on a breadboard and contains a push button used for forward movement, a reverse switch for changing the driving direction, and a potentiometer used for left/right steering control. These inputs are processed by the STM32 NUCLEO board and transmitted wirelessly through the HC-12 transmitter module using UART communication.
 
-The system allows forward, backward, left, and right movement by controlling four DC motors through a motor driver.
+On the vehicle side, another HC-12 module receives the commands and forwards them to the motor control system. The motors are controlled through a motor driver connected to the 4-wheel chassis platform.
 
+The system supports:
+- forward movement;
+- reverse movement;
+- left/right steering;
+- wireless real-time control.
 ## Motivation
 
 I chose this project because it combines both hardware and software concepts, allowing me to learn about wireless communication, motor control, and processing analog inputs.
@@ -27,11 +32,13 @@ It is also a practical project that can be extended later with additional sensor
 
 ![Block Diagram](./block_diagram.svg)
 
-The system is composed of two main parts:
-- Controller side: joystick module and HC-12 transmitter
-- Car side: HC-12 receiver, STM32 NUCLEO board, motor driver, DC motors, and battery pack
+The system is composed of two main subsystems:
+- Controller side: breadboard inputs, STM32 NUCLEO board, and HC-12 transmitter module
+- Car side: HC-12 receiver module, control board, motor driver, DC motors, and battery-powered chassis
 
-The joystick generates analog input values. These values are converted into movement commands and transmitted wirelessly through the HC-12 module. The STM32 receives the commands and sends control signals to the motor driver, which drives the DC motors.
+The controller subsystem uses a push button for forward movement, a reverse switch for changing direction, and a potentiometer for steering control. These inputs are processed by the STM32 microcontroller and transmitted wirelessly through the HC-12 module using UART communication.
+
+On the vehicle side, the received commands are processed by the control board, which drives the motor driver and controls the left and right motor channels accordingly.
 
 ## Log
 
@@ -43,38 +50,64 @@ Researched communication between controller and car using the HC-12 module. Plan
 
 ## Hardware
 
-STM32 NUCLEO-U545RE-Q board: Responsible for receiving commands and controlling the motors.
+Controller Subsystem:
 
-HC-12 Wireless Module: Used for wireless serial communication between the controller and the car.
+The controller subsystem is built on a breadboard and contains:
+- STM32 NUCLEO-U545RE-Q development board;
+- HC-12 wireless transmitter module;
+- push button used for forward movement;
+- reverse direction switch;
+- potentiometer used for left/right steering control;
+- breadboard power rails and jumper wire connections.
 
-Joystick Module: Used to generate movement commands based on user input.
+The push button is used to trigger forward movement commands, 
+while the potentiometer generates analog values used for steering control. 
+The reverse switch changes the movement direction between forward and backward modes.
 
-L298N Motor Driver: Controls the speed and direction of the DC motors.
+The STM32 reads these inputs using GPIO and ADC peripherals and transmits movement commands wirelessly through the HC-12 module using UART communication.
 
-DC Motors: Provide physical movement for the car.
+Vehicle Subsystem:
 
-Battery Pack: Provides power for the car components.
+The vehicle subsystem contains:
+- 4-wheel chassis platform;
+- four DC motors;
+- motor driver shield;
+- HC-12 wireless receiver module;
+- battery-powered motor control system.
+
+The wireless commands received through the HC-12 module are processed by the control board, 
+which drives the motors through the motor driver.
+
+The motors are grouped into left and right channels in order to implement differential steering for turning movements.
+
+The prototype is assembled using modular components, jumper wires, breadboard connections, 
+and removable driver modules in order to simplify debugging and hardware testing during development.
 
 ### Schematics
+<img width="1536" height="1024" alt="rc_car_schematic_final" src="https://github.com/user-attachments/assets/b499023a-e384-4005-b832-41f049b0c361" />
 
-TBD
 
 ### Bill of Materials
 
 | Device | Usage | Price |
 |--------|--------|-------|
-| [STM32 Nucleo U545RE-Q](https://www.st.com/en/evaluation-tools/nucleo-u545re-q.html) | The microcontroller | [110 RON](https://ro.rsdelivers.com/product/stmicroelectronics/nucleo-u545re-q/stmicroelectronics-nucleo-u545re-q-stm32-nucleo/1899566) |
-| [Chassis Kit](https://www.pololu.com/category/2/motors) | The base for the car | [48.40 RON](https://www.emag.ro/) |
-| [HC-12 Wireless Module](https://components101.com/wireless/hc-12-wireless-module) | Used for wireless communication | [20 RON](https://www.emag.ro/) |
-| [Joystick Module](https://components101.com/modules/joystick-module) | Used for user input control | [20 RON](https://www.emag.ro/) |
-| [L298N Motor Driver](https://components101.com/modules/l298n-motor-driver-module) | Used to control the motors | [10.84 RON](https://www.emag.ro/) |
-| [DC Motors](https://www.pololu.com/category/2/motors) | Used for movement | [4 x 15 RON](https://www.emag.ro/) |
-| [Battery Pack](https://components101.com/batteries/18650-lithium-cell) | Power supply | [30 RON](https://www.emag.ro/) |
+| [STM32 Nucleo U545RE-Q](https://www.st.com/en/evaluation-tools/nucleo-u545re-q.html) | Main controller for processing inputs and wireless communication | [110 RON](https://ro.rsdelivers.com/product/stmicroelectronics/nucleo-u545re-q/stmicroelectronics-nucleo-u545re-q-stm32-nucleo/1899566) |
+| [HC-12 Wireless Module](https://components101.com/wireless/hc-12-wireless-module) | Wireless UART communication between controller and vehicle | [2 x 20 RON](https://www.emag.ro/) |
+| Breadboard | Prototype assembly for controller inputs | [15 RON](https://www.emag.ro/) |
+| Push Button | Used for forward movement control | [5 RON](https://www.emag.ro/) |
+| Toggle Switch | Used for reverse direction selection | [8 RON](https://www.emag.ro/) |
+| Potentiometer | Used for left/right steering input | [10 RON](https://www.emag.ro/) |
+| Motor Driver Shield / L298N Module | Controls the DC motors | [25 RON](https://www.emag.ro/) |
+| [DC Motors](https://www.pololu.com/category/2/motors) | Vehicle movement system | [4 x 15 RON](https://www.emag.ro/) |
+| Chassis Platform | Mechanical support for the RC car | [50 RON](https://www.emag.ro/) |
+| Battery Pack | Power supply for motors and control system | [30 RON](https://www.emag.ro/) |
+| Jumper Wires | Hardware interconnections | [10 RON](https://www.emag.ro/) |
 
 ## Software
 
 | Library | Description | Usage |
 |---------|-------------|-------|
+| [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html) | STM32 configuration tool | Used for GPIO, UART, ADC, and clock configuration |
 | [embassy-stm32](https://github.com/embassy-rs/embassy/tree/main/embassy-stm32) | Hardware interface | Used as the base library for controlling STM32 peripherals |
 | [embassy-time](https://github.com/embassy-rs/embassy) | Timing utilities | Used for delays and timing control |
 | [embedded-hal](https://github.com/rust-embedded/embedded-hal) | Hardware abstraction traits | Used for portable embedded hardware interfaces |
@@ -83,6 +116,6 @@ TBD
 
 1. https://components101.com/wireless/hc-12-wireless-module
 2. https://components101.com/modules/l298n-motor-driver-module
-3. https://components101.com/modules/joystick-module
-4. https://www.st.com/en/evaluation-tools/nucleo-u545re-q.html
-5. https://github.com/embassy-rs/embassy
+3. https://www.st.com/en/evaluation-tools/nucleo-u545re-q.html
+4. https://github.com/embassy-rs/embassy
+5. https://www.st.com/en/development-tools/stm32cubemx.html
